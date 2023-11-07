@@ -3,7 +3,7 @@
 
 run() {
     set -xe 
-    javac Server.java 
+    javac Server.java Client.java
     java Server
 }
 clean(){

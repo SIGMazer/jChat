@@ -55,8 +55,6 @@ public class ClientHandler implements Runnable{
         }
     }
     public void setName(){
-        out.print("Enter your name: ");
-        out.flush();
         try{
             this.name = in.readLine();
         }catch(IOException e){

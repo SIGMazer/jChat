@@ -6,7 +6,12 @@ Simple chat server
 ## Quick start 
 Start server 
 ```console 
-./run.sh
+./run.sh run 
+```
+Connect with client interface 
+```console
+java Client
+
 ```
 Connect with telnet 
 ```console
@@ -15,7 +20,7 @@ telnet localhost 6969
 ```
 Connect with netcat 
 ```console
-telnet localhost 6969
+nc localhost 6969
 
 ```
 

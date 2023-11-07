@@ -29,19 +29,16 @@ public class ClientHandler implements Runnable{
     @Override
     public void run(){
         try{
-            setName();
-            Server.clients.add(this);
-            String msg;
+            String msg = ""; 
+            Server.messagehandler(new Message(this, msg, MessageType.CONNECT));
             while((msg = in.readLine()) != null){
                 if(msg.equals(":exit")){
-                    Server.broadcast(this.name + " has left the chat!", this);
-                    Server.clients.remove(this);
-                    shutdown();
+                    Server.messagehandler(new Message(this, msg, MessageType.DISCONNECT));
                     break;
                 }
                 if(msg.isEmpty())
                     continue;
-                Server.broadcast(this.name +": "+msg, this);
+                Server.messagehandler(new Message(this, msg, MessageType.MESSAGE));
             }
         }catch(IOException e){
             System.err.println("Error while reading from client: " + e.getMessage());
@@ -49,7 +46,7 @@ public class ClientHandler implements Runnable{
         }
     }
     
-    private void shutdown(){
+    public void shutdown(){
         out.close();
         try{
             client.close();
@@ -57,7 +54,7 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
     }
-    private void setName(){
+    public void setName(){
         out.print("Enter your name: ");
         out.flush();
         try{
@@ -66,5 +63,7 @@ public class ClientHandler implements Runnable{
             e.printStackTrace();
         }
     }
-
+    public String getName(){
+        return this.name;
+    }
 }

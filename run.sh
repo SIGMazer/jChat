@@ -1,3 +1,19 @@
+#!/bin/sh
 
-javac Server.java 
-java Server
+
+run() {
+    set -xe 
+    javac Server.java 
+    java Server
+}
+clean(){
+    set -xe 
+    rm  *.class 
+}
+if [[ $1 == "run" ]]; then
+    run
+elif [[ $1 == "clean" ]]; then
+    clean
+else
+    echo "Usage: ./run.sh [run|clean]"
+fi

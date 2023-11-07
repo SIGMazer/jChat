@@ -24,10 +24,40 @@ public class Server{
             e.printStackTrace();
         }
     }
-    public static void broadcast(String msg, ClientHandler sender){
+    private static void broadcast(String msg, ClientHandler sender){
         for(ClientHandler client : clients){
             if(client != sender)
                 client.send(msg);
+        }
+    }
+
+    public static void messagehandler(Message mas){
+        Message msg = mas;
+        String name = msg.sender.getName(); 
+        ClientHandler client = msg.sender;
+        switch(mas.type){
+            case CONNECT:
+                client.setName();
+                for(ClientHandler c : clients){
+                    if(c.getName().equals(client.getName())){
+                        client.send("Name already taken!");
+                        client.shutdown();
+                        return;
+                    }
+                }
+                clients.add(client);
+                broadcast(client.getName() +": join the group", mas.sender);
+                client.send("Welcome to the group buddy!");
+                break;
+            case DISCONNECT:
+                broadcast(name +": left the group", mas.sender);
+                clients.remove(mas.sender);
+                client.send("Bye!");
+                client.shutdown();
+                break;
+            case MESSAGE:
+                broadcast(name +": "+msg.content, mas.sender);
+                break;
         }
     }
 }
